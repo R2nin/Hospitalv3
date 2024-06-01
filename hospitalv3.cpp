@@ -80,14 +80,15 @@ Especialidades lerEspecialidade() {
 }
 
 Medicos lerMedico() {
+    // Declare the function buscarDescricaoEspecialidade
+    void buscarDescricaoEspecialidade(std::vector<Especialidades>& especialidades, int codigo_especialidade);
+
     Medicos medico;
     std::cout << "Digite o codigo do medico: ";
     std::cin >> medico.codigo2;
     std::cout << "Digite o nome do medico: ";
-    std::cin.ignore();
-    std::getline(std::cin, medico.nome);
-    std::cout << "Digite o codigo da especialidade: ";
-    std::cin >> medico.codigo_especialidade;
+    
+   
     std::cout << "Digite o endereco do medico: ";
     std::cin.ignore();
     std::getline(std::cin, medico.endereco);
@@ -279,7 +280,16 @@ void adicionarCID(std::vector<CID>& doencas) {
         std::cout << "Código do CID já existente!\n";
     }
 }
-
+void buscarDescricaoEspecialidade(const std::vector<Especialidades>& especialidades, int codigoEspecialidade) {
+    auto it = std::find_if(especialidades.begin(), especialidades.end(), [codigoEspecialidade](const Especialidades& especialidade) {
+        return especialidade.codigo1 == codigoEspecialidade;
+    });
+    if (it != especialidades.end()) {
+        std::cout << "Descricao da especialidade: " << it->descricao << std::endl;
+    } else {
+        std::cout << "Especialidade nao encontrada!\n";
+    }
+}
 void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
     Medicamentos novoMedicamento = lerMedicamento();
     auto it = std::find_if(medicines.begin(), medicines.end(), [&novoMedicamento](const Medicamentos& medicine) {
