@@ -218,13 +218,13 @@ void mostrarConsultas(const std::vector<Consultas>& consultas) {
 void adicionarCidade(std::vector<Cidades>& cidades) {
     Cidades novaCidade = lerCidade();
     auto it = std::find_if(cidades.begin(), cidades.end(), [&novaCidade](const Cidades& cidade) {
-        return cidade.codigo == novaCidade.codigo;
+        return cidade.nome == novaCidade.nome;
     });
-    if (it == cidades.end()) {
+    if (it != cidades.end()) {
+        std::cout << "Nome da cidade ja existente!\n";
+    } else {
         cidades.push_back(novaCidade);
         std::cout << "Cidade adicionada com sucesso!\n";
-    } else {
-        std::cout << "Codigo da cidade ja existente!\n";
     }
 }
 
