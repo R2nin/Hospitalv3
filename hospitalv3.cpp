@@ -61,11 +61,11 @@ Cidades lerCidade() {
     Cidades cidade;
     std::cout << "Digite o codigo da cidade: ";
     std::cin >> cidade.codigo;
-    std::cin.ignore();
     std::cout << "Digite o nome da cidade: ";
+    std::cin.ignore();
     std::getline(std::cin, cidade.nome);
     std::cout << "Digite a UF da cidade: ";
-    std::getline(std::cin, cidade.UF);
+    std::cin >> cidade.UF;
     return cidade;
 }
 
@@ -73,8 +73,8 @@ Especialidades lerEspecialidade() {
     Especialidades especialidade;
     std::cout << "Digite o codigo da especialidade: ";
     std::cin >> especialidade.codigo1;
-    std::cin.ignore();
     std::cout << "Digite a descricao da especialidade: ";
+    std::cin.ignore();
     std::getline(std::cin, especialidade.descricao);
     return especialidade;
 }
@@ -83,17 +83,17 @@ Medicos lerMedico() {
     Medicos medico;
     std::cout << "Digite o codigo do medico: ";
     std::cin >> medico.codigo2;
-    std::cin.ignore();
     std::cout << "Digite o nome do medico: ";
+    std::cin.ignore();
     std::getline(std::cin, medico.nome);
     std::cout << "Digite o codigo da especialidade: ";
     std::cin >> medico.codigo_especialidade;
-    std::cin.ignore();
     std::cout << "Digite o endereco do medico: ";
+    std::cin.ignore();
     std::getline(std::cin, medico.endereco);
     std::cout << "Digite o telefone do medico: ";
-    std::getline(std::cin, medico.telefone);
-    std::cout << "Digite o codigo da cidade do medico: ";
+    std::cin >> medico.telefone;
+    std::cout << "Digite o codigo da cidade: ";
     std::cin >> medico.codigo_cidade;
     return medico;
 }
@@ -102,12 +102,12 @@ Pacientes lerPaciente() {
     Pacientes paciente;
     std::cout << "Digite o CPF do paciente: ";
     std::cin >> paciente.CPF;
-    std::cin.ignore();
     std::cout << "Digite o nome do paciente: ";
+    std::cin.ignore();
     std::getline(std::cin, paciente.nome);
     std::cout << "Digite o endereco do paciente: ";
     std::getline(std::cin, paciente.endereco);
-    std::cout << "Digite o codigo da cidade do paciente: ";
+    std::cout << "Digite o codigo da cidade: ";
     std::cin >> paciente.codigo_cidade;
     return paciente;
 }
@@ -116,8 +116,8 @@ CID lerCID() {
     CID cid;
     std::cout << "Digite o codigo do CID: ";
     std::cin >> cid.codigo3;
-    std::cin.ignore();
     std::cout << "Digite a descricao do CID: ";
+    std::cin.ignore();
     std::getline(std::cin, cid.descricaoc);
     return cid;
 }
@@ -126,8 +126,8 @@ Medicamentos lerMedicamento() {
     Medicamentos medicamento;
     std::cout << "Digite o codigo do medicamento: ";
     std::cin >> medicamento.codigo;
-    std::cin.ignore();
     std::cout << "Digite a descricao do medicamento: ";
+    std::cin.ignore();
     std::getline(std::cin, medicamento.descricao);
     std::cout << "Digite a quantidade em estoque: ";
     std::cin >> medicamento.quant_estoque;
@@ -144,97 +144,76 @@ Consultas lerConsulta() {
     Consultas consulta;
     std::cout << "Digite o CPF do paciente: ";
     std::cin >> consulta.CPF;
-    std::cout << "Digite o codigo do medico: ";
+    std::cout << "Digite o codigo do médico: ";
     std::cin >> consulta.cod_medico;
-    std::cin.ignore();
-    std::cout << "Digite a data da consulta: ";
-    std::getline(std::cin, consulta.data);
-    std::cout << "Digite o horario da consulta: ";
-    std::getline(std::cin, consulta.horario);
+    std::cout << "Digite a data da consulta (YYYY-MM-DD): ";
+    std::cin >> consulta.data;
+    std::cout << "Digite o horario da consulta (HH:MM): ";
+    std::cin >> consulta.horario;
     std::cout << "Digite o codigo do CID: ";
     std::cin >> consulta.cod_CID;
     std::cout << "Digite o codigo do medicamento: ";
     std::cin >> consulta.cod_medicamento;
-    std::cout << "Digite a quantidade de medicamento: ";
+    std::cout << "Digite a quantidade do medicamento: ";
     std::cin >> consulta.qtde_medicamento;
     return consulta;
 }
 
 // Funções para exibir dados
 void mostrarCidades(const std::vector<Cidades>& cidades) {
-    std::cout << "---------------------------------------------------------------------------\n";
+    std::cout << "Cidades:\n";
     for (const auto& cidade : cidades) {
         std::cout << "Codigo: " << cidade.codigo << ", Nome: " << cidade.nome << ", UF: " << cidade.UF << std::endl;
     }
-    std::cout << "---------------------------------------------------------------------------\n";
 }
 
 void mostrarEspecialidades(const std::vector<Especialidades>& especialidades) {
+    std::cout << "Especialidades:\n";
     for (const auto& especialidade : especialidades) {
-        std::cout << "Codigo da Especialidade: " << especialidade.codigo1 << ", Especialidade: " << especialidade.descricao << std::endl;
+        std::cout << "Codigo: " << especialidade.codigo1 << ", Descrição: " << especialidade.descricao << std::endl;
     }
-    std::cout << "---------------------------------------------------------------------------\n";
 }
 
 void mostrarMedicos(const std::vector<Medicos>& medicos) {
-    std::cout << "CADASTRO DE MEDICOS\n";
+    std::cout << "Medicos:\n";
     for (const auto& medico : medicos) {
-        std::cout << "Codigo do Medico: " << medico.codigo2 << "\n"
-                  << "Medico: " << medico.nome << "\n"
-                  << "Codigo Especialidade: " << medico.codigo_especialidade << "\n"
-                  << "Endereco: " << medico.endereco << "\n"
-                  << "Telefone: " << medico.telefone << "\n"
-                  << "Codigo Cidade: " << medico.codigo_cidade << "\n"
-                  << "---------------------------------------------------------------------------\n";
+        std::cout << "Codigo: " << medico.codigo2 << ", Nome: " << medico.nome << ", Código Especialidade: " << medico.codigo_especialidade 
+                  << ", Endereço: " << medico.endereco << ", Telefone: " << medico.telefone << ", Código Cidade: " << medico.codigo_cidade << std::endl;
     }
 }
 
 void mostrarPacientes(const std::vector<Pacientes>& pacientes) {
-    std::cout << "CADASTRO DE PACIENTES\n";
+    std::cout << "Pacientes:\n";
     for (const auto& paciente : pacientes) {
-        std::cout << "CPF paciente: " << paciente.CPF << "\n"
-                  << "Nome paciente: " << paciente.nome << "\n"
-                  << "Endereco: " << paciente.endereco << "\n"
-                  << "Codigo Cidade: " << paciente.codigo_cidade << "\n"
-                  << "---------------------------------------------------------------------------\n";
+        std::cout << "CPF: " << paciente.CPF << ", Nome: " << paciente.nome << ", Endereço: " << paciente.endereco << ", Código Cidade: " << paciente.codigo_cidade << std::endl;
     }
 }
 
 void mostrarCID(const std::vector<CID>& doencas) {
-    std::cout << "CADASTRO DE CID\n";
+    std::cout << "CID:\n";
     for (const auto& doenca : doencas) {
-        std::cout << "Codigo: " << doenca.codigo3 << "\n"
-                  << "Descricao: " << doenca.descricaoc << "\n"
-                  << "---------------------------------------------------------------------------\n";
+        std::cout << "Codigo: " << doenca.codigo3 << ", Descricao: " << doenca.descricaoc << std::endl;
     }
 }
 
 void mostrarMedicamentos(const std::vector<Medicamentos>& medicines) {
+    std::cout << "Medicamentos:\n";
     for (const auto& medicine : medicines) {
-        std::cout << "Codigo: " << medicine.codigo << "\n"
-                  << "Descricao: " << medicine.descricao << "\n"
-                  << "Quantidade em estoque: " << medicine.quant_estoque << "\n"
-                  << "Estoque Minimo: " << medicine.estoque_minimo << "\n"
-                  << "Estoque Maximo: " << medicine.estoque_maximo << "\n"
-                  << "Preco Unitario: " << medicine.preco_unitario << "\n"
-                  << "---------------------------------------------------------------------------\n";
+        std::cout << "Codigo: " << medicine.codigo << ", Descricao: " << medicine.descricao << ", Quantidade em estoque: " << medicine.quant_estoque 
+                  << ", Estoque minimo: " << medicine.estoque_minimo << ", Estoque maximo: " << medicine.estoque_maximo << ", Preço unitario: " << medicine.preco_unitario << std::endl;
     }
 }
 
 void mostrarConsultas(const std::vector<Consultas>& consultas) {
+    std::cout << "Consultas:\n";
     for (const auto& consulta : consultas) {
-        std::cout << "CPF do Paciente: " << consulta.CPF << "\n"
-                  << "Codigo do Medico: " << consulta.cod_medico << "\n"
-                  << "Data: " << consulta.data << "\n"
-                  << "Horario: " << consulta.horario << "\n"
-                  << "Codigo da Doenca: " << consulta.cod_CID << "\n"
-                  << "Codigo do Medicamento: " << consulta.cod_medicamento << "\n"
-                  << "Quantidade de Medicamento: " << consulta.qtde_medicamento << "\n"
-                  << "---------------------------------------------------------------------------\n";
+        std::cout << "CPF do Paciente: " << consulta.CPF << ", Codigo do Medico: " << consulta.cod_medico << ", Data: " << consulta.data 
+                  << ", Horario: " << consulta.horario << ", Codigo do CID: " << consulta.cod_CID << ", Codigo do Medicamento: " << consulta.cod_medicamento 
+                  << ", Quantidade do Medicamento: " << consulta.qtde_medicamento << std::endl;
     }
 }
 
-// Funções para adicionar dados
+// Funções para adicionar dados com verificação de duplicação
 void adicionarCidade(std::vector<Cidades>& cidades) {
     Cidades novaCidade = lerCidade();
     auto it = std::find_if(cidades.begin(), cidades.end(), [&novaCidade](const Cidades& cidade) {
@@ -244,7 +223,7 @@ void adicionarCidade(std::vector<Cidades>& cidades) {
         cidades.push_back(novaCidade);
         std::cout << "Cidade adicionada com sucesso!\n";
     } else {
-        std::cout << "Cidade com este código já existe!\n";
+        std::cout << "Código da cidade já existente!\n";
     }
 }
 
@@ -257,7 +236,7 @@ void adicionarEspecialidade(std::vector<Especialidades>& especialidades) {
         especialidades.push_back(novaEspecialidade);
         std::cout << "Especialidade adicionada com sucesso!\n";
     } else {
-        std::cout << "Especialidade com este código já existe!\n";
+        std::cout << "Codigo da especialidade ja existente!\n";
     }
 }
 
@@ -270,7 +249,7 @@ void adicionarMedico(std::vector<Medicos>& medicos) {
         medicos.push_back(novoMedico);
         std::cout << "Medico adicionado com sucesso!\n";
     } else {
-        std::cout << "Medico com este código já existe!\n";
+        std::cout << "Codigo do médico ja existente!\n";
     }
 }
 
@@ -283,52 +262,44 @@ void adicionarPaciente(std::vector<Pacientes>& pacientes) {
         pacientes.push_back(novoPaciente);
         std::cout << "Paciente adicionado com sucesso!\n";
     } else {
-        std::cout << "Paciente com este CPF já existe!\n";
+        std::cout << "CPF do paciente já existente!\n";
     }
 }
 
 void adicionarCID(std::vector<CID>& doencas) {
-    CID novaDoenca = lerCID();
-    auto it = std::find_if(doencas.begin(), doencas.end(), [&novaDoenca](const CID& doenca) {
-        return doenca.codigo3 == novaDoenca.codigo3;
+    CID novoCID = lerCID();
+    auto it = std::find_if(doencas.begin(), doencas.end(), [&novoCID](const CID& cid) {
+        return cid.codigo3 == novoCID.codigo3;
     });
     if (it == doencas.end()) {
-        doencas.push_back(novaDoenca);
-        std::cout << "CID adicionada com sucesso!\n";
+        doencas.push_back(novoCID);
+        std::cout << "CID adicionado com sucesso!\n";
     } else {
-        std::cout << "CID com este código já existe!\n";
+        std::cout << "Código do CID já existente!\n";
     }
 }
 
 void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
     Medicamentos novoMedicamento = lerMedicamento();
-    auto it = std::find_if(medicines.begin(), medicines.end(), [&novoMedicamento](const Medicamentos& medicamento) {
-        return medicamento.codigo == novoMedicamento.codigo;
+    auto it = std::find_if(medicines.begin(), medicines.end(), [&novoMedicamento](const Medicamentos& medicine) {
+        return medicine.codigo == novoMedicamento.codigo;
     });
     if (it == medicines.end()) {
         medicines.push_back(novoMedicamento);
         std::cout << "Medicamento adicionado com sucesso!\n";
     } else {
-        std::cout << "Medicamento com este código já existe!\n";
+        std::cout << "Codigo do medicamento ja existente!\n";
     }
 }
 
+// Menu principal
 int main() {
-    // Inicializando a estrutura Cidades com os dados fornecidos
     std::vector<Cidades> cidades = {
-        {1, "Assis", "SP"},
-        {2, "Candido Mota", "SP"},
-        {3, "Londrina", "PR"},
-        {4, "Esteio", "RS"},
-        {5, "Xanxere", "SC"}
+        {1, "Assis", "SP"}, {2, "Candido Mota", "SP"}, {3, "Londrina", "PR"}, {4, "Esteio", "RS"}, {5, "Xanxere", "SC"}
     };
 
     std::vector<Especialidades> especialidades = {
-        {1, "Oftalmologia"},
-        {2, "Cardiologista"},
-        {3, "Generalista"},
-        {4, "Pediatria"},
-        {5, "Psiquiatria"}
+        {1, "Oftalmologia"}, {2, "Cardiologista"}, {3, "Generalista"}, {4, "Pediatria"}, {5, "Psiquiatria"}
     };
 
     std::vector<Medicos> medicos = {
@@ -348,11 +319,7 @@ int main() {
     };
 
     std::vector<CID> doencas = {
-        {1, "Caxumba"},
-        {2, "Febre Amarela"},
-        {3, "Gripe"},
-        {4, "Dengue"},
-        {5, "Covid"}
+        {1, "Caxumba"}, {2, "Febre Amarela"}, {3, "Gripe"}, {4, "Dengue"}, {5, "Covid"}
     };
 
     std::vector<Medicamentos> medicines = {
@@ -371,10 +338,9 @@ int main() {
         {20824063007, 2, "2022-01-05", "16:00", 4, 5, 7}
     };
 
-    int escolha;
-
+    int opcao;
     do {
-        std::cout << "Menu de Opções\n";
+        std::cout << "Menu Principal:\n";
         std::cout << "1. Mostrar Cidades\n";
         std::cout << "2. Mostrar Especialidades\n";
         std::cout << "3. Mostrar Medicos\n";
@@ -389,10 +355,10 @@ int main() {
         std::cout << "12. Adicionar CID\n";
         std::cout << "13. Adicionar Medicamento\n";
         std::cout << "0. Sair\n";
-        std::cout << "Escolha uma opção: ";
-        std::cin >> escolha;
+        std::cout << "Escolha uma opcao: ";
+        std::cin >> opcao;
 
-        switch (escolha) {
+        switch (opcao) {
             case 1:
                 mostrarCidades(cidades);
                 break;
@@ -433,12 +399,13 @@ int main() {
                 adicionarMedicamento(medicines);
                 break;
             case 0:
-                std::cout << "Saindo do programa...\n";
+                std::cout << "Saindo...\n";
                 break;
             default:
-                std::cout << "Opção inválida! Tente novamente.\n";
+                std::cout << "Opção inválida!\n";
+                break;
         }
-    } while (escolha != 0);
+    } while (opcao != 0);
 
     return 0;
 }
