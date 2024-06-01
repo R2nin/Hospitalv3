@@ -170,22 +170,22 @@ void mostrarCidades(const std::vector<Cidades>& cidades) {
 void mostrarEspecialidades(const std::vector<Especialidades>& especialidades) {
     std::cout << "Especialidades:\n";
     for (const auto& especialidade : especialidades) {
-        std::cout << "Codigo: " << especialidade.codigo1 << ", Descrição: " << especialidade.descricao << std::endl;
+        std::cout << "Codigo: " << especialidade.codigo1 << ", Descricao: " << especialidade.descricao << std::endl;
     }
 }
 
 void mostrarMedicos(const std::vector<Medicos>& medicos) {
     std::cout << "Medicos:\n";
     for (const auto& medico : medicos) {
-        std::cout << "Codigo: " << medico.codigo2 << ", Nome: " << medico.nome << ", Código Especialidade: " << medico.codigo_especialidade 
-                  << ", Endereço: " << medico.endereco << ", Telefone: " << medico.telefone << ", Código Cidade: " << medico.codigo_cidade << std::endl;
+        std::cout << "Codigo: " << medico.codigo2 << ", Nome: " << medico.nome << ", Codigo Especialidade: " << medico.codigo_especialidade 
+                  << ", Endereco: " << medico.endereco << ", Telefone: " << medico.telefone << ", Codigo Cidade: " << medico.codigo_cidade << std::endl;
     }
 }
 
 void mostrarPacientes(const std::vector<Pacientes>& pacientes) {
     std::cout << "Pacientes:\n";
     for (const auto& paciente : pacientes) {
-        std::cout << "CPF: " << paciente.CPF << ", Nome: " << paciente.nome << ", Endereço: " << paciente.endereco << ", Código Cidade: " << paciente.codigo_cidade << std::endl;
+        std::cout << "CPF: " << paciente.CPF << ", Nome: " << paciente.nome << ", Endereco: " << paciente.endereco << ", Codigo Cidade: " << paciente.codigo_cidade << std::endl;
     }
 }
 
@@ -200,7 +200,7 @@ void mostrarMedicamentos(const std::vector<Medicamentos>& medicines) {
     std::cout << "Medicamentos:\n";
     for (const auto& medicine : medicines) {
         std::cout << "Codigo: " << medicine.codigo << ", Descricao: " << medicine.descricao << ", Quantidade em estoque: " << medicine.quant_estoque 
-                  << ", Estoque minimo: " << medicine.estoque_minimo << ", Estoque maximo: " << medicine.estoque_maximo << ", Preço unitario: " << medicine.preco_unitario << std::endl;
+                  << ", Estoque minimo: " << medicine.estoque_minimo << ", Estoque maximo: " << medicine.estoque_maximo << ", Preco unitario: " << medicine.preco_unitario << std::endl;
     }
 }
 
@@ -223,7 +223,7 @@ void adicionarCidade(std::vector<Cidades>& cidades) {
         cidades.push_back(novaCidade);
         std::cout << "Cidade adicionada com sucesso!\n";
     } else {
-        std::cout << "Código da cidade já existente!\n";
+        std::cout << "Codigo da cidade ja existente!\n";
     }
 }
 
@@ -243,15 +243,16 @@ void adicionarEspecialidade(std::vector<Especialidades>& especialidades) {
 void adicionarMedico(std::vector<Medicos>& medicos) {
     Medicos novoMedico = lerMedico();
     auto it = std::find_if(medicos.begin(), medicos.end(), [&novoMedico](const Medicos& medico) {
-        return medico.codigo2 == novoMedico.codigo2;
+        return medico.nome == novoMedico.nome;
     });
     if (it == medicos.end()) {
         medicos.push_back(novoMedico);
         std::cout << "Medico adicionado com sucesso!\n";
     } else {
-        std::cout << "Codigo do médico ja existente!\n";
+        std::cout << "Nome do medico ja existente!\n";
     }
 }
+
 
 void adicionarPaciente(std::vector<Pacientes>& pacientes) {
     Pacientes novoPaciente = lerPaciente();
@@ -364,7 +365,7 @@ int main() {
                 break;
             case 2:
                 mostrarEspecialidades(especialidades);
-                break;
+                break;\
             case 3:
                 mostrarMedicos(medicos);
                 break;
@@ -402,7 +403,7 @@ int main() {
                 std::cout << "Saindo...\n";
                 break;
             default:
-                std::cout << "Opção inválida!\n";
+                std::cout << "Opcao inválida!\n";
                 break;
         }
     } while (opcao != 0);
