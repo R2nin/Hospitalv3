@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <algorithm>
 
+
 // Definição das estruturas
 struct Cidades {
     int codigo;
@@ -240,17 +241,46 @@ void adicionarEspecialidade(std::vector<Especialidades>& especialidades) {
     }
 }
 
-void adicionarMedico(std::vector<Medicos>& medicos) {
+void adicionarMedicoValidado(std::vector<Medicos>& medicos, std::vector<Especialidades>& especialidades, std::vector<Cidades>& cidades) {
     Medicos novoMedico = lerMedico();
+
+    // Verificar se o código do médico já existe
     auto it = std::find_if(medicos.begin(), medicos.end(), [&novoMedico](const Medicos& medico) {
-        return medico.nome == novoMedico.nome;
+        return medico.codigo == novoMedico.codigo;
     });
-    if (it == medicos.end()) {
-        medicos.push_back(novoMedico);
-        std::cout << "Medico adicionado com sucesso!\n";
-    } else {
-        std::cout << "Nome do medico ja existente!\n";
+
+    if (it != medicos.end()) {
+        std::cout << "Codigo do medico já existente! Não será possível adicionar o novo médico.\n";
+        return;
     }
+
+    // Buscar a descrição da especialidade
+    auto itEspecialidade = std::find_if(especialidades.begin(), especialidades.end(), [&novoMedico](const Especialidades& especialidade) {
+        return especialidade.codigo == novoMedico.codigo_especialidade;
+    });
+
+    if (itEspecialidade == especialidades.end()) {
+        std::cout << "Codigo da especialidade invalido! Não será possível adicionar o novo médico.\n";
+        return;
+    }
+
+    std::cout << "Descricao da especialidade: " << itEspecialidade->descricao << std::endl;
+
+    // Buscar o nome da cidade e UF
+    auto itCidade = std::find_if(cidades.begin(), cidades.end(), [&novoMedico](const Cidades& cidade) {
+        return cidade.codigo == novoMedico.codigo_cidade;
+    });
+
+    if (itCidade == cidades.end()) {
+        std::cout << "Codigo da cidade invalido! Não sera possivel adicionar o novo medico.\n";
+        return;
+    }
+
+    std::cout << "Nome da cidade: " << itCidade->nome << ", UF: " << itCidade->UF << std::endl;
+
+    // Adicionar o novo médico ao vetor de médicos
+    medicos.push_back(novoMedico);
+    std::cout << "Medico adicionado com sucesso!\n";
 }
 
 void adicionarPaciente(std::vector<Pacientes>& pacientes) {
@@ -293,7 +323,9 @@ void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
 }
 
 // Menu principal
-int main() {
+int main() 
+
+{
     std::vector<Cidades> cidades = {
         {1, "Assis", "SP"}, {2, "Candido Mota", "SP"}, {3, "Londrina", "PR"}, {4, "Esteio", "RS"}, {5, "Xanxere", "SC"}
     };
@@ -407,7 +439,7 @@ int main() {
                         adicionarEspecialidade(especialidades);
                         break;
                     case 3:
-                        adicionarMedico(medicos);
+                        adicionarMedicoValidado(medicos, especialidades, cidades);
                         break;
                     case 4:
                         adicionarPaciente(pacientes);
