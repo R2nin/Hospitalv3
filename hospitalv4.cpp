@@ -371,6 +371,113 @@ void excluirPacientePorNome(std::vector<Pacientes>& pacientes) {
         std::cout << "Exclusao cancelada.\n";
     }
 }
+void agendarConsulta(std::vector<Pacientes>& pacientes, std::vector<Medicos>& medicos, std::vector<CID>& doencas,
+                    std::vector<Medicamentos>& medicamentos, std::vector<Consultas>& consultas, std::vector<Cidades>& cidades, std::vector<Especialidades>& especialidades){
+    Consultas novaConsulta;
+
+    // Buscar o paciente com o CPF informado e exibir o nome do paciente e o nome da cidade e UF
+    std::cout << "Digite o CPF do paciente: ";
+    std::cin >> novaConsulta.CPF;
+
+    auto itPaciente = std::find_if(pacientes.begin(), pacientes.end(), [&novaConsulta](const Pacientes& paciente) {
+        return paciente.CPF == novaConsulta.CPF;
+    });
+
+    if (itPaciente == pacientes.end()) {
+        std::cout << "CPF do paciente nao encontrado! Nao sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Nome do paciente: " << itPaciente->nome << std::endl;
+
+    auto itCidade = std::find_if(cidades.begin(), cidades.end(), [&itPaciente](const Cidades& cidade) {
+        return cidade.codigo == itPaciente->codigo_cidade;
+    });
+
+    if (itCidade == cidades.end()) {
+        std::cout << "Codigo da cidade invalido! Nao sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Nome da cidade: " << itCidade->nome << ", UF: " << itCidade->UF << std::endl;
+
+    // Buscar o médico com o código informado e exibir o nome do médico e a descrição da especialidade
+    std::cout << "Digite o codigo do medico: ";
+    std::cin >> novaConsulta.cod_medico;
+
+    auto itMedico = std::find_if(medicos.begin(), medicos.end(), [&novaConsulta](const Medicos& medico) {
+        return medico.codigo == novaConsulta.cod_medico;
+    });
+
+    if (itMedico == medicos.end()) {
+        std::cout << "Codigo do modico nao encontrado! Nao sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Nome do medico: " << itMedico->nome << std::endl;
+
+    auto itEspecialidade = std::find_if(especialidades.begin(), especialidades.end(), [&itMedico](const Especialidades& especialidade) {
+        return especialidade.codigo == itMedico->codigo_especialidade;
+    });
+
+    if (itEspecialidade == especialidades.end()) {
+        std::cout << "Codigo da especialidade invalido! Não sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Descricao da especialidade: " << itEspecialidade->descricao << std::endl;
+
+    // Ler a data e o horário da consulta
+    std::cout << "Digite a data da consulta (YYYY-MM-DD): ";
+    std::cin >> novaConsulta.data;
+    std::cout << "Digite o horario da consulta (HH:MM): ";
+    std::cin >> novaConsulta.horario;
+
+    // Buscar a doença com o código CID informado e exibir a descrição
+    std::cout << "Digite o codigo do CID: ";
+    std::cin >> novaConsulta.cod_CID;
+
+    auto itDoenca = std::find_if(doencas.begin(), doencas.end(), [&novaConsulta](const CID& doenca) {
+        return doenca.codigo == novaConsulta.cod_CID;
+    });
+
+    if (itDoenca == doencas.end()) {
+        std::cout << "Codigo do CID nao encontrado! Nao será possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Descriçao do CID: " << itDoenca->descricaoc << std::endl;
+
+    // Buscar o medicamento com o código informado e exibir a descrição
+    std::cout << "Digite o codigo do medicamento: ";
+    std::cin >> novaConsulta.cod_medicamento;
+
+    auto itMedicamento = std::find_if(medicamentos.begin(), medicamentos.end(), [&novaConsulta](const Medicamentos& medicamento) {
+        return medicamento.codigo == novaConsulta.cod_medicamento;
+    });
+
+    if (itMedicamento == medicamentos.end()) {
+        std::cout << "Codigo do medicamento nao encontrado! Nao sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    std::cout << "Descricao do medicamento: " << itMedicamento->descricao << std::endl;
+
+    // Ler a quantidade do medicamento e verificar se a quantidade em estoque é suficiente
+    std::cout << "Digite a quantidade do medicamento: ";
+    std::cin >> novaConsulta.qtde_medicamento;
+
+    if (novaConsulta.qtde_medicamento > itMedicamento->quant_estoque) {
+        std::cout << "Quantidade em estoque insuficiente! Nao sera possivel realizar o agendamento.\n";
+        return;
+    }
+
+    // Adicionar a nova consulta ao vetor de consultas e atualizar a quantidade em estoque do medicamento
+    consultas.push_back(novaConsulta);
+    itMedicamento->quant_estoque -= novaConsulta.qtde_medicamento;
+
+    std::cout << "Consulta agendada com sucesso!\n";
+}
 // Menu principal
 int main() 
 
@@ -478,6 +585,7 @@ int main()
                 std::cout << "5. Adicionar CID\n";
                 std::cout << "6. Adicionar Medicamento\n";
                 std::cout << "7. Excluir Paciente\n";
+                std::cout << "8. Agendar consulta\n";
                 std::cout << "Escolha uma opcao: ";
                 std::cin >> opcaoAdicionar;
 
@@ -502,6 +610,9 @@ int main()
                         break;
                     case 7:
                         excluirPacientePorNome(pacientes);
+                        break;
+                    case 8:
+                        agendarConsulta(pacientes, medicos, doencas, medicines, consultas, cidades, especialidades);
                         break;    
                     default:
                         std::cout << "Opcao invalida!\n";
