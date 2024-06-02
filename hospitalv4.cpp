@@ -338,7 +338,39 @@ void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
         std::cout << "Codigo do medicamento ja existente!\n";
     }
 }
+void excluirPacientePorNome(std::vector<Pacientes>& pacientes) {
+    std::string nome;
+    std::cout << "Digite o nome do paciente que deseja excluir: ";
+    std::cin.ignore();
+    std::getline(std::cin, nome);
 
+    // Buscar o paciente com o nome informado
+    auto it = std::find_if(pacientes.begin(), pacientes.end(), [&nome](const Pacientes& paciente) {
+        return paciente.nome == nome;
+    });
+
+    if (it == pacientes.end()) {
+        std::cout << "Nome do paciente nao encontrado! Nao sera possível realizar a exclusao.\n";
+        return;
+    }
+
+    // Exibir informações do paciente encontrado
+    std::cout << "\nPaciente encontrado:\n";
+    std::cout << "CPF: " << it->CPF << ", Nome: " << it->nome << ", Endereco: " << it->endereco << ", Codigo Cidade: " << it->codigo_cidade << std::endl;
+
+    // Confirmar a exclusão do paciente
+    char confirmacao;
+    std::cout << "Tem certeza que deseja excluir este paciente? (S/N): ";
+    std::cin >> confirmacao;
+
+    if (confirmacao == 'S' || confirmacao == 's') {
+        // Remover o paciente do vetor de pacientes
+        pacientes.erase(it);
+        std::cout << "Paciente excluído com sucesso!\n";
+    } else {
+        std::cout << "Exclusao cancelada.\n";
+    }
+}
 // Menu principal
 int main() 
 
@@ -445,6 +477,7 @@ int main()
                 std::cout << "4. Adicionar Paciente\n";
                 std::cout << "5. Adicionar CID\n";
                 std::cout << "6. Adicionar Medicamento\n";
+                std::cout << "7. Excluir Paciente\n";
                 std::cout << "Escolha uma opcao: ";
                 std::cin >> opcaoAdicionar;
 
@@ -467,6 +500,9 @@ int main()
                     case 6:
                         adicionarMedicamento(medicines);
                         break;
+                    case 7:
+                        excluirPacientePorNome(pacientes);
+                        break;    
                     default:
                         std::cout << "Opcao invalida!\n";
                 }
