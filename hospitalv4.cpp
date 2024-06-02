@@ -283,17 +283,34 @@ void adicionarMedicoValidado(std::vector<Medicos>& medicos, std::vector<Especial
     std::cout << "Medico adicionado com sucesso!\n";
 }
 
-void adicionarPaciente(std::vector<Pacientes>& pacientes) {
+void adicionarPacienteValidado(std::vector<Pacientes>& pacientes, std::vector<Cidades>& cidades) {
     Pacientes novoPaciente = lerPaciente();
+
+    // Verificar se o CPF do paciente ja existe
     auto it = std::find_if(pacientes.begin(), pacientes.end(), [&novoPaciente](const Pacientes& paciente) {
         return paciente.CPF == novoPaciente.CPF;
     });
-    if (it == pacientes.end()) {
-        pacientes.push_back(novoPaciente);
-        std::cout << "Paciente adicionado com sucesso!\n";
-    } else {
-        std::cout << "CPF do paciente já existente!\n";
+
+    if (it != pacientes.end()) {
+        std::cout << "CPF do paciente ja existente! Não sera possivel adicionar o novo paciente.\n";
+        return;
     }
+
+    // Buscar o nome da cidade e UF
+    auto itCidade = std::find_if(cidades.begin(), cidades.end(), [&novoPaciente](const Cidades& cidade) {
+        return cidade.codigo == novoPaciente.codigo_cidade;
+    });
+
+    if (itCidade == cidades.end()) {
+        std::cout << "Codigo da cidade invalido! Não sera possivel adicionar o novo paciente.\n";
+        return;
+    }
+
+    std::cout << "Nome da cidade: " << itCidade->nome << ", UF: " << itCidade->UF << std::endl;
+
+    // Adicionar o novo paciente ao vetor de pacientes
+    pacientes.push_back(novoPaciente);
+    std::cout << "Paciente adicionado com sucesso!\n";
 }
 
 void adicionarCID(std::vector<CID>& doencas) {
@@ -442,7 +459,7 @@ int main()
                         adicionarMedicoValidado(medicos, especialidades, cidades);
                         break;
                     case 4:
-                        adicionarPaciente(pacientes);
+                        adicionarPacienteValidado(pacientes, cidades);
                         break;
                     case 5:
                         adicionarCID(doencas);
