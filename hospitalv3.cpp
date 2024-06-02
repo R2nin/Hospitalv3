@@ -159,7 +159,17 @@ Consultas lerConsulta() {
     std::cin >> consulta.qtde_medicamento;
     return consulta;
 }
-
+// Função para buscar a descrição da especialidade pelo código
+std::string buscarEspecialidadePorCodigo(int codigo, const std::vector<Especialidades>& especialidades) {
+    auto it = std::find_if(especialidades.begin(), especialidades.end(), [codigo](const Especialidades& especialidade) {
+        return especialidade.codigo == codigo;
+    });
+    if (it != especialidades.end()) {
+        return it->descricao;
+    } else {
+        return "Especialidade nao encontrada";
+    }
+}
 // Funções para exibir dados
 void mostrarCidades(const std::vector<Cidades>& cidades) {
     std::cout << "Cidades:\n";
