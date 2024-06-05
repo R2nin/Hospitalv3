@@ -683,7 +683,7 @@ int main() {
     case 1:
     std::cout << "Sugestoes de compras:\n";
     for (const auto& medicine : medicines) {
-        if (medicine.quant_estoque < medicine.estoque_minimo) {
+        if (medicine.quant_estoque < 1.1*medicine.estoque_minimo) {
             std::cout << "Codigo: " << medicine.codigo << ", Descricao: " << medicine.descricao
                       << ", Quantidade em estoque: " << medicine.quant_estoque << std::endl;
         }
