@@ -1,11 +1,11 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <iomanip>
-#include <algorithm>
-
+#include <iostream> // biblioteca para entrada e saída de dados
+#include <string> // biblioteca para manipulação de strings
+#include <vector> // biblioteca para manipulação de vetores
+#include <iomanip> // biblioteca para manipulação de saída de dados
+#include <algorithm> // biblioteca para algoritmos de ordenação e busca
 
 // Definição das estruturas
+
 struct Cidades {
     int codigo;
     std::string nome;
@@ -13,7 +13,7 @@ struct Cidades {
 };
 
 struct Especialidades {
-    int codigo; // Corrigido para 'codigo'
+    int codigo; // corrigido para 'codigo'
     std::string descricao;
 };
 
@@ -35,7 +35,7 @@ struct Pacientes {
 
 struct CID {
     int codigo;
-    std::string descricaoc;
+    std::string descricaoc; // corrigido para 'descricao'
 };
 
 struct Medicamentos {
@@ -58,6 +58,7 @@ struct Consultas {
 };
 
 // Funções para leitura de dados
+
 Cidades lerCidade() {
     Cidades cidade;
     std::cout << "Digite o codigo da cidade: ";
@@ -169,6 +170,7 @@ Consultas lerConsulta() {
 }
 
 // Funções para exibir dados
+
 void mostrarCidades(const std::vector<Cidades>& cidades) {
     std::cout << "Cidades:\n";
     for (const auto& cidade : cidades) {
@@ -186,7 +188,7 @@ void mostrarEspecialidades(const std::vector<Especialidades>& especialidades) {
 void mostrarMedicos(const std::vector<Medicos>& medicos) {
     std::cout << "Medicos:\n";
     for (const auto& medico : medicos) {
-        std::cout << "Codigo: " << medico.codigo << ", Nome: " << medico.nome << ", Codigo Especialidade: " << medico.codigo_especialidade 
+        std::cout << "Codigo: " << medico.codigo << ", Nome: " << medico.nome << ", Codigo Especialidade: " << medico.codigo_especialidade
                   << ", Endereco: " << medico.endereco << ", Telefone: " << medico.telefone << ", Codigo Cidade: " << medico.codigo_cidade << std::endl;
     }
 }
@@ -208,7 +210,7 @@ void mostrarCID(const std::vector<CID>& doencas) {
 void mostrarMedicamentos(const std::vector<Medicamentos>& medicines) {
     std::cout << "Medicamentos:\n";
     for (const auto& medicine : medicines) {
-        std::cout << "Codigo: " << medicine.codigo << ", Descricao: " << medicine.descricao << ", Quantidade em estoque: " << medicine.quant_estoque 
+        std::cout << "Codigo: " << medicine.codigo << ", Descricao: " << medicine.descricao << ", Quantidade em estoque: " << medicine.quant_estoque
                   << ", Estoque minimo: " << medicine.estoque_minimo << ", Estoque maximo: " << medicine.estoque_maximo << ", Preco unitario: " << medicine.preco_unitario << std::endl;
     }
 }
@@ -216,13 +218,14 @@ void mostrarMedicamentos(const std::vector<Medicamentos>& medicines) {
 void mostrarConsultas(const std::vector<Consultas>& consultas) {
     std::cout << "Consultas:\n";
     for (const auto& consulta : consultas) {
-        std::cout << "CPF do Paciente: " << consulta.CPF << ", Codigo do Medico: " << consulta.cod_medico << ", Data: " << consulta.data 
-                  << ", Horario: " << consulta.horario << ", Codigo do CID: " << consulta.cod_CID << ", Codigo do Medicamento: " << consulta.cod_medicamento 
+        std::cout << "CPF do Paciente: " << consulta.CPF << ", Codigo do Medico: " << consulta.cod_medico << ", Data: " << consulta.data
+                  << ", Horario: " << consulta.horario << ", Codigo do CID: " << consulta.cod_CID << ", Codigo do Medicamento: " << consulta.cod_medicamento
                   << ", Quantidade do Medicamento: " << consulta.qtde_medicamento << std::endl;
     }
 }
 
 // Funções para adicionar dados com verificação de duplicação
+
 void adicionarCidade(std::vector<Cidades>& cidades) {
     Cidades novaCidade = lerCidade();
     auto it = std::find_if(cidades.begin(), cidades.end(), [&novaCidade](const Cidades& cidade) {
@@ -321,95 +324,192 @@ void adicionarPacienteValidado(std::vector<Pacientes>& pacientes, std::vector<Ci
     std::cout << "Paciente adicionado com sucesso!\n";
 }
 
-void agendarConsulta(std::vector<Paciente>& pacientes, std::vector<Medico>& medicos, std::vector<CID>& doencas,
-                      std::vector<Medicamento>& medicamentos, std::vector<Consulta>& consultas, std::vector<Cidade>& cidades, std::vector<Especialidade>& especialidades) {
+void adicionarCID(std::vector<CID>& doencas) {
+    CID novoCID = lerCID();
+    auto it = std::find_if(doencas.begin(), doencas.end(), [&novoCID](const CID& cid) {
+        return cid.codigo == novoCID.codigo;
+    });
+    if (it == doencas.end()) {
+        doencas.push_back(novoCID);
+        std::cout << "CID adicionado com sucesso!\n";
+    } else {
+        std::cout << "Código do CID já existente!\n";
+    }
+}
 
-    long long codigo_paciente;
+void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
+    Medicamentos novoMedicamento = lerMedicamento();
+    auto it = std::find_if(medicines.begin(), medicines.end(), [&novoMedicamento](const Medicamentos& medicine) {
+        return medicine.codigo == novoMedicamento.codigo;
+    });
+    if (it == medicines.end()) {
+        medicines.push_back(novoMedicamento);
+        std::cout << "Medicamento adicionado com sucesso!\n";
+    } else {
+        std::cout << "Codigo do medicamento ja existente!\n";
+    }
+}
+
+void excluirPacientePorNome(std::vector<Pacientes>& pacientes) {
+    std::string nome;
+    std::cout << "Digite o nome do paciente que deseja excluir: ";
+    std::cin.ignore();
+    std::getline(std::cin, nome);
+
+    // Buscar o paciente com o nome informado
+    auto it = std::find_if(pacientes.begin(), pacientes.end(), [&nome](const Pacientes& paciente) {
+        return paciente.nome == nome;
+    });
+
+    if (it == pacientes.end()) {
+        std::cout << "Nome do paciente nao encontrado! Nao sera possível realizar a exclusao.\n";
+        return;
+    }
+
+    // Exibir informações do paciente encontrado
+    std::cout << "\nPaciente encontrado:\n";
+    std::cout << "CPF: " << it->CPF << ", Nome: " << it->nome << ", Endereco: " << it->endereco << ", Codigo Cidade: " << it->codigo_cidade << std::endl;
+
+    // Confirmar a exclusão do paciente
+    char confirmacao;
+    std::cout << "Tem certeza que deseja excluir este paciente? (S/N): ";
+    std::cin >> confirmacao;
+
+    if (confirmacao == 'S' || confirmacao == 's') {
+        // Remover o paciente do vetor de pacientes
+        pacientes.erase(it);
+        std::cout << "Paciente excluído com sucesso!\n";
+    } else {
+        std::cout << "Exclusao cancelada.\n";
+    }
+}
+
+void agendarConsulta(std::vector<Pacientes>& pacientes, std::vector<Medicos>& medicos, std::vector<CID>& doencas,
+                      std::vector<Medicamentos>& medicamentos, std::vector<Consultas>& consultas, std::vector<Cidades>& cidades, std::vector<Especialidades>& especialidades) {
+    int codigo_paciente;
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Digite o CPF do paciente: ";
     std::cin >> codigo_paciente;
 
-    Paciente* paciente = buscarPacientePorCPF(pacientes, codigo_paciente);
-    if (!paciente) {
+    // Buscar o paciente com o CPF informado e exibir o nome do paciente e o nome da cidade e UF
+    auto it_paciente = std::find_if(pacientes.begin(), pacientes.end(), [codigo_paciente](const Pacientes& paciente) {
+        return paciente.CPF == codigo_paciente;
+    });
+
+    if (it_paciente == pacientes.end()) {
         std::cout << "Paciente nao encontrado!\n";
         return;
     }
 
-    std::cout << "Nome do paciente: " << paciente->getNome() << "\n";
+    std::cout << "Nome do paciente: " << it_paciente->nome << "\n";
+    std::cout << "Endereco do paciente: " << it_paciente->endereco << "\n";
 
-    Cidade* cidade = buscarCidade(cidades, paciente->getCodigo_cidade());
-    if (cidade) {
-        std::cout << "Nome da cidade: " << cidade->getNome() << "\n";
-        std::cout << "UF da cidade: " << cidade->getUF() << "\n";
+    auto it_cidade = std::find_if(cidades.begin(), cidades.end(), [it_paciente](const Cidades& cidade) {
+        return cidade.codigo == it_paciente->codigo_cidade;
+    });
+
+    if (it_cidade == cidades.end()) {
+        std::cout << "Codigo da cidade nao encontrado!\n";
+        return;
     }
+
+    std::cout << "Nome da cidade: " << it_cidade->nome << "\n";
+    std::cout << "UF da cidade: " << it_cidade->UF << "\n";
 
     int codigo_medico;
     std::cout << "Digite o codigo do medico: ";
     std::cin >> codigo_medico;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    Medico* medico = buscarMedico(medicos, codigo_medico);
-    if (!medico) {
-        std::cout << "Medico nao encontrado!\n";
+    // Buscar o medico com o codigo informado e exibir o nome do medico e a descricao da especialidade
+    auto it_medico = std::find_if(medicos.begin(), medicos.end(), [codigo_medico](const Medicos& medico) {
+        return medico.codigo == codigo_medico;
+    });
+
+    if (it_medico == medicos.end()) {
+        std::cout << "Codigo do medico nao encontrado!\n";
         return;
     }
 
-    std::cout << "Nome do medico: " << medico->getNome() << "\n";
+    std::cout << "Nome do medico: " << it_medico->nome << "\n";
+    std::cout << "Endereco do medico: " << it_medico->endereco << "\n";
+    std::cout << "Telefone do medico: " << it_medico->telefone << "\n";
 
-    Especialidade* especialidade = buscarEspecialidade(especialidades, medico->getCodigo_especialidade());
-    if (especialidade) {
-        std::cout << "Descricao da especialidade: " << especialidade->getDescricao() << "\n";
+    auto it_especialidade = std::find_if(especialidades.begin(), especialidades.end(), [it_medico](const Especialidades& especialidade) {
+        return especialidade.codigo == it_medico->codigo_especialidade;
+    });
+
+    if (it_especialidade == especialidades.end()) {
+        std::cout << "Codigo da especialidade nao encontrado!\n";
+        return;
     }
+
+    std::cout << "Descricao da especialidade: " << it_especialidade->descricao << "\n";
 
     std::string data_consulta;
     std::cout << "Digite a data da consulta (formato: dd/mm/aaaa): ";
-    std::cin >> data_consulta;
+    std::getline(std::cin, data_consulta);
 
     int codigo_CID;
     std::cout << "Digite o codigo do CID: ";
     std::cin >> codigo_CID;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    CID* cid = buscarCID(doencas, codigo_CID);
-    if (!cid) {
-        std::cout << "CID nao encontrado!\n";
+    // Buscar o CID com o codigo informado e exibir a descricao
+    auto it_doenca = std::find_if(doencas.begin(), doencas.end(), [codigo_CID](const CID& doenca) {
+        return doenca.codigo == codigo_CID;
+    });
+
+    if (it_doenca == doencas.end()) {
+        std::cout << "Codigo do CID nao encontrado!\n";
         return;
     }
 
-    std::cout << "Descricao do CID: " << cid->getDescricaoc() << "\n";
+    std::cout << "Descricao do CID: " << it_doenca->descricaoc << "\n";
 
     int codigo_medicamento;
     std::cout << "Digite o codigo do medicamento: ";
     std::cin >> codigo_medicamento;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    Medicamento* medicamento = buscarMedicamento(medicamentos, codigo_medicamento);
-    if (!medicamento) {
-        std::cout << "Medicamento nao encontrado!\n";
+    // Buscar o medicamento com o codigo informado e exibir a descricao
+    auto it_medicamento = std::find_if(medicamentos.begin(), medicamentos.end(), [codigo_medicamento](const Medicamentos& medicamento) {
+        return medicamento.codigo == codigo_medicamento;
+    });
+
+    if (it_medicamento == medicamentos.end()) {
+        std::cout << "Codigo do medicamento nao encontrado!\n";
         return;
     }
 
-    std::cout << "Descricao do medicamento: " << medicamento->getDescricao() << "\n";
+    std::cout << "Descricao do medicamento: " << it_medicamento->descricao << "\n";
+    std::cout << "Quantidade em estoque: " << it_medicamento->quant_estoque << "\n";
+    std::cout << "Estoque minimo: " << it_medicamento->estoque_minimo << "\n";
 
     int qtde_medicamento;
     std::cout << "Digite a quantidade do medicamento: ";
     std::cin >> qtde_medicamento;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    if (qtde_medicamento > medicamento->getQuant_estoque()) {
-        std::cout << "Quantidade de medicamento insuficiente em estoque!\n";
+    // Verificar se a quantidade de medicamento solicitada é maior que o estoque mínimo
+    if (it_medicamento->quant_estoque - qtde_medicamento < it_medicamento->estoque_minimo) {
+        std::cout << "Quantidade de medicamentos insuficiente. A quantidade solicitada excede o estoque minimo.\n";
         return;
     }
 
-    medicamento->setQuant_estoque(medicamento->getQuant_estoque() - qtde_medicamento);
+    // Criar um novo registro de consulta e adicionar ao vetor de consultas
+    Consultas nova_consulta{ codigo_paciente, codigo_medico, data_consulta, "", codigo_CID, codigo_medicamento, qtde_medicamento };
+    consultas.push_back(nova_consulta);
 
-    Consulta consulta(paciente->getCPF(), medico->getCodigo(), data_consulta, "", codigo_CID, codigo_medicamento, qtde_medicamento);
-    consultas.push_back(consulta);
+    // Atualizar a quantidade de medicamento em estoque
+    it_medicamento->quant_estoque -= qtde_medicamento;
 
     std::cout << "Consulta agendada com sucesso!\n";
-}
+};
 
 // Menu principal
-int main() 
-
-{
+int main() {
     std::vector<Cidades> cidades = {
         {1, "Assis", "SP"}, {2, "Candido Mota", "SP"}, {3, "Londrina", "PR"}, {4, "Esteio", "RS"}, {5, "Xanxere", "SC"}
     };
@@ -541,7 +641,7 @@ int main()
                         break;
                     case 8:
                         agendarConsulta(pacientes, medicos, doencas, medicines, consultas, cidades, especialidades);
-                        break;    
+                        break;
                     default:
                         std::cout << "Opcao invalida!\n";
                 }
@@ -556,5 +656,3 @@ int main()
 
     return 0;
 }
-
-

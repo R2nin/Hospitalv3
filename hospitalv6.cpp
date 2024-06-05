@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <algorithm>
 
+// Definição das estruturas
 struct Cidades {
     int codigo;
     std::string nome;
@@ -25,7 +26,7 @@ struct Medicos {
 };
 
 struct Pacientes {
-    long long CPF;
+    std::string CPF; // Corrigido para string
     std::string nome;
     std::string endereco;
     int codigo_cidade;
@@ -33,7 +34,7 @@ struct Pacientes {
 
 struct CID {
     int codigo;
-    std::string descricaoc;
+    std::string descricao;
 };
 
 struct Medicamentos {
@@ -46,7 +47,7 @@ struct Medicamentos {
 };
 
 struct Consultas {
-    long long CPF;
+    std::string CPF; // Corrigido para string
     int cod_medico;
     std::string data;
     std::string horario;
@@ -55,8 +56,7 @@ struct Consultas {
     int qtde_medicamento;
 };
 
-
-
+// Funções para leitura de dados
 Cidades lerCidade() {
     Cidades cidade;
     std::cout << "Digite o codigo da cidade: ";
@@ -103,7 +103,7 @@ Pacientes lerPaciente() {
     std::cin.clear();
     std::cin.ignore();
     std::cout << "Digite o CPF do paciente: ";
-    std::cin >> paciente.CPF;
+    std::getline(std::cin, paciente.CPF); // Corrigido para getline
     std::cout << "Digite o nome do paciente: ";
     std::cin.ignore();
     std::getline(std::cin, paciente.nome);
@@ -122,7 +122,7 @@ CID lerCID() {
     std::cin >> cid.codigo;
     std::cout << "Digite a descricao do CID: ";
     std::cin.ignore();
-    std::getline(std::cin, cid.descricaoc);
+    std::getline(std::cin, cid.descricao);
     return cid;
 }
 
@@ -148,14 +148,15 @@ Medicamentos lerMedicamento() {
 
 Consultas lerConsulta() {
     Consultas consulta;
-    
+    std::cin.clear();
+    std::cin.ignore();
     std::cout << "Digite o CPF do paciente: ";
-    std::cin >> consulta.CPF;
-
+    std::getline(std::cin, consulta.CPF); // Corrigido para getline
     std::cout << "Digite o codigo do médico: ";
     std::cin >> consulta.cod_medico;
     std::cout << "Digite a data da consulta (YYYY-MM-DD): ";
-    std::cin >> consulta.data;
+    std::cin.ignore();
+    std::getline(std::cin, consulta.data);
     std::cout << "Digite o horario da consulta (HH:MM): ";
     std::cin >> consulta.horario;
     std::cout << "Digite o codigo do CID: ";
@@ -167,7 +168,7 @@ Consultas lerConsulta() {
     return consulta;
 }
 
-
+// Funções para exibir dados
 void mostrarCidades(const std::vector<Cidades>& cidades) {
     std::cout << "Cidades:\n";
     for (const auto& cidade : cidades) {
@@ -200,7 +201,7 @@ void mostrarPacientes(const std::vector<Pacientes>& pacientes) {
 void mostrarCID(const std::vector<CID>& doencas) {
     std::cout << "CID:\n";
     for (const auto& doenca : doencas) {
-        std::cout << "Codigo: " << doenca.codigo << ", Descricao: " << doenca.descricaoc << std::endl;
+        std::cout << "Codigo: " << doenca.codigo << ", Descricao: " << doenca.descricao << std::endl;
     }
 }
 
@@ -221,7 +222,7 @@ void mostrarConsultas(const std::vector<Consultas>& consultas) {
     }
 }
 
-
+// Funções para adicionar dados com verificação de duplicação
 void adicionarCidade(std::vector<Cidades>& cidades) {
     Cidades novaCidade = lerCidade();
     auto it = std::find_if(cidades.begin(), cidades.end(), [&novaCidade](const Cidades& cidade) {
@@ -257,7 +258,7 @@ void adicionarMedicoValidado(std::vector<Medicos>& medicos, std::vector<Especial
     });
 
     if (it != medicos.end()) {
-        std::cout << "Codigo do medico já existente! Nao sera possivel adicionar o novo médico.\n";
+        std::cout << "Codigo do medico já existente! Não será possível adicionar o novo médico.\n";
         return;
     }
 
@@ -267,7 +268,7 @@ void adicionarMedicoValidado(std::vector<Medicos>& medicos, std::vector<Especial
     });
 
     if (itEspecialidade == especialidades.end()) {
-        std::cout << "Codigo da especialidade invalido! Nao sera possivel adicionar o novo médico.\n";
+        std::cout << "Codigo da especialidade invalido! Não será possível adicionar o novo médico.\n";
         return;
     }
 
@@ -279,7 +280,7 @@ void adicionarMedicoValidado(std::vector<Medicos>& medicos, std::vector<Especial
     });
 
     if (itCidade == cidades.end()) {
-        std::cout << "Codigo da cidade invalido! Nao sera possivel adicionar o novo medico.\n";
+        std::cout << "Codigo da cidade invalido! Não sera possivel adicionar o novo medico.\n";
         return;
     }
 
@@ -299,7 +300,7 @@ void adicionarPacienteValidado(std::vector<Pacientes>& pacientes, std::vector<Ci
     });
 
     if (it != pacientes.end()) {
-        std::cout << "CPF do paciente ja existente! Nao sera possivel adicionar o novo paciente.\n";
+        std::cout << "CPF do paciente ja existente! Não sera possivel adicionar o novo paciente.\n";
         return;
     }
 
@@ -309,7 +310,7 @@ void adicionarPacienteValidado(std::vector<Pacientes>& pacientes, std::vector<Ci
     });
 
     if (itCidade == cidades.end()) {
-        std::cout << "Codigo da cidade invalido! Nao sera possivel adicionar o novo paciente.\n";
+        std::cout << "Codigo da cidade invalido! Não sera possivel adicionar o novo paciente.\n";
         return;
     }
 
@@ -346,16 +347,50 @@ void adicionarMedicamento(std::vector<Medicamentos>& medicines) {
     }
 }
 
+void excluirPacientePorNome(std::vector<Pacientes>& pacientes) {
+    std::string nome;
+    std::cout << "Digite o nome do paciente que deseja excluir: ";
+    std::cin.ignore();
+    std::getline(std::cin, nome);
+
+    // Buscar o paciente com o nome informado
+    auto it = std::find_if(pacientes.begin(), pacientes.end(), [&nome](const Pacientes& paciente) {
+        return paciente.nome == nome;
+    });
+
+    if (it == pacientes.end()) {
+        std::cout << "Nome do paciente nao encontrado! Nao sera possível realizar a exclusao.\n";
+        return;
+    }
+
+    // Exibir informações do paciente encontrado
+    std::cout << "\nPaciente encontrado:\n";
+    std::cout << "CPF: " << it->CPF << ", Nome: " << it->nome << ", Endereco: " << it->endereco << ", Codigo Cidade: " << it->codigo_cidade << std::endl;
+
+    // Confirmar a exclusão do paciente
+    char confirmacao;
+    std::cout << "Tem certeza que deseja excluir este paciente? (S/N): ";
+    std::cin >> confirmacao;
+
+    if (confirmacao == 'S' || confirmacao == 's') {
+        // Remover o paciente do vetor de pacientes
+        pacientes.erase(it);
+        std::cout << "Paciente excluído com sucesso!\n";
+    } else {
+        std::cout << "Exclusao cancelada.\n";
+    }
+}
+
 void agendarConsulta(std::vector<Pacientes>& pacientes, std::vector<Medicos>& medicos, std::vector<CID>& doencas,
                       std::vector<Medicamentos>& medicamentos, std::vector<Consultas>& consultas, std::vector<Cidades>& cidades, std::vector<Especialidades>& especialidades) {
-    int codigo_paciente;
+    std::string codigo_paciente; // Corrigido para string
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Digite o CPF do paciente: ";
-    std::cin >> codigo_paciente;
+    std::getline(std::cin, codigo_paciente); // Corrigido para getline
 
     // Buscar o paciente com o CPF informado e exibir o nome do paciente e o nome da cidade e UF
-    auto it_paciente = std::find_if(pacientes.begin(), pacientes.end(), [codigo_paciente](const Pacientes& paciente) {
+    auto it_paciente = std::find_if(pacientes.begin(), pacientes.end(), [&codigo_paciente](const Pacientes& paciente) {
         return paciente.CPF == codigo_paciente;
     });
 
@@ -428,7 +463,7 @@ void agendarConsulta(std::vector<Pacientes>& pacientes, std::vector<Medicos>& me
         return;
     }
 
-    std::cout << "Descricao do CID: " << it_doenca->descricaoc << "\n";
+    std::cout << "Descricao do CID: " << it_doenca->descricao << "\n";
 
     int codigo_medicamento;
     std::cout << "Digite o codigo do medicamento: ";
@@ -468,9 +503,9 @@ void agendarConsulta(std::vector<Pacientes>& pacientes, std::vector<Medicos>& me
     it_medicamento->quant_estoque -= qtde_medicamento;
 
     std::cout << "Consulta agendada com sucesso!\n";
-}
+};
 
-
+// Menu principal
 int main() {
     std::vector<Cidades> cidades = {
         {1, "Assis", "SP"}, {2, "Candido Mota", "SP"}, {3, "Londrina", "PR"}, {4, "Esteio", "RS"}, {5, "Xanxere", "SC"}
@@ -489,18 +524,18 @@ int main() {
     };
 
     std::vector<Pacientes> pacientes = {
-        {33666790003, "Carlos Felipe", "Travessa Antonio Ferreira, 123", 1},
-        {24880474061, "Luis Guilherme", "Avenida Rio Branco, 420", 2},
-        {44672557022, "Ana Luiza", "Rua dos Cidadaos, 456", 3},
-        {12659373085, "Juliana Silva", "Rua das Flores, 789", 4},
-        {80813033065, "Fernanda Souza", "Avenida Paulista, 1010", 5}
+        {"33666790003", "Carlos Felipe", "Travessa Antonio Ferreira, 123", 1},
+        {"24880474061", "Luis Guilherme", "Avenida Rio Branco, 420", 2},
+        {"44672557022", "Ana Luiza", "Rua dos Cidadaos, 456", 3},
+        {"12659373085", "Juliana Silva", "Rua das Flores, 789", 4},
+        {"80813033065", "Fernanda Souza", "Avenida Paulista, 1010", 5}
     };
 
     std::vector<CID> doencas = {
         {1, "Fratura do antebraco"}, {2, "Hemorragia nasal"}, {3, "Traumatismo superficial"}, {4, "Dor abdominal"}, {5, "Enxaqueca"}
     };
 
-    std::vector<Medicamentos> medicamentos = {
+    std::vector<Medicamentos> medicines = {
         {1, "Paracetamol", 100, 20, 200, 5.50},
         {2, "Dipirona", 150, 30, 250, 3.75},
         {3, "Amoxicilina", 80, 15, 100, 15.25},
@@ -509,11 +544,11 @@ int main() {
     };
 
     std::vector<Consultas> consultas = {
-        {33666790003, 1, "2024-06-01", "09:00", 1, 1, 2},
-        {24880474061, 2, "2024-06-02", "10:00", 2, 2, 3},
-        {44672557022, 3, "2024-06-03", "11:00", 3, 3, 4},
-        {12659373085, 4, "2024-06-04", "12:00", 4, 4, 5},
-        {80813033065, 5, "2024-06-05", "13:00", 5, 5, 1}
+        {"33666790003", 1, "2024-06-01", "09:00", 1, 1, 2},
+        {"24880474061", 2, "2024-06-02", "10:00", 2, 2, 3},
+        {"44672557022", 3, "2024-06-03", "11:00", 3, 3, 4},
+        {"12659373085", 4, "2024-06-04", "12:00", 4, 4, 5},
+        {"80813033065", 5, "2024-06-05", "13:00", 5, 5, 1}
     };
 
     int opcao;
@@ -556,7 +591,7 @@ int main() {
                         mostrarCID(doencas);
                         break;
                     case 6:
-                        mostrarMedicamentos(medicamentos);
+                        mostrarMedicamentos(medicines);
                         break;
                     case 7:
                         mostrarConsultas(consultas);
@@ -574,7 +609,8 @@ int main() {
                 std::cout << "4. Adicionar Paciente\n";
                 std::cout << "5. Adicionar CID\n";
                 std::cout << "6. Adicionar Medicamento\n";
-                std::cout << "7. Agendar consulta\n";
+                std::cout << "7. Excluir Paciente\n";
+                std::cout << "8. Agendar consulta\n";
                 std::cout << "Escolha uma opcao: ";
                 std::cin >> opcaoAdicionar;
 
@@ -595,11 +631,13 @@ int main() {
                         adicionarCID(doencas);
                         break;
                     case 6:
-                        adicionarMedicamento(medicamentos);
+                        adicionarMedicamento(medicines);
                         break;
-                    
                     case 7:
-                        agendarConsulta(pacientes, medicos, doencas, medicamentos, consultas, cidades, especialidades);
+                        excluirPacientePorNome(pacientes);
+                        break;
+                    case 8:
+                        agendarConsulta(pacientes, medicos, doencas, medicines, consultas, cidades, especialidades);
                         break;
                     default:
                         std::cout << "Opcao invalida!\n";
